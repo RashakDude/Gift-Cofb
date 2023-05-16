@@ -30,10 +30,10 @@ public class TestVectors {
         return hex.toString();
     }
 
-    public static String convertToHexString(int[] input) {
+    public static String convertToHexString(long[] input) {
         String temp = "";
         for (int i = 0; i < input.length; i++) {
-            temp += integerToHex(input[i]);
+            temp += integerToHex((int) input[i]);
         }
         return temp;
     }
@@ -50,22 +50,22 @@ public class TestVectors {
 
                     count += 1;
 
-                    int[] key = new int[CRYPTO_KEYBYTES];
-                    int[] nonce = new int[CRYPTO_NPUBBYTES];
-                    int[] msg = new int[mlen];
-                    int[] ad = new int[adlen];
+                    long[] key = new long[CRYPTO_KEYBYTES];
+                    long[] nonce = new long[CRYPTO_NPUBBYTES];
+                    long[] msg = new long[mlen];
+                    long[] ad = new long[adlen];
 
                     for (int i = 0; i < CRYPTO_KEYBYTES; i++) {
-                        key[i] = i % 256;
+                        key[i] = (i % 256);
                     }
                     for (int i = 0; i < CRYPTO_NPUBBYTES; i++) {
-                        nonce[i] = i % 256;
+                        nonce[i] = (i % 256);
                     }
                     for (int i = 0; i < mlen; i++) {
-                        msg[i] = i % 256;
+                        msg[i] = (i % 256);
                     }
                     for (int i = 0; i < adlen; i++) {
-                        ad[i] = i % 256;
+                        ad[i] = (i % 256);
                     }
 
                     String original_message = convertToHexString(msg);
@@ -77,9 +77,9 @@ public class TestVectors {
                     myWriter.write("PT = " + convertToHexString(msg) + "\n");
                     myWriter.write("AD = " + convertToHexString(ad) + "\n");
 
-                    int[] ct = GiftComb.crypto_aead_encrypt(msg, ad, nonce, key);
+                    long[] ct = GiftComb.crypto_aead_encrypt(msg, ad, nonce, key);
                     myWriter.write("CT = " + convertToHexString(ct) + "\n");
-                    int[] dct = GiftComb.crypto_aead_decrypt(ct, ad, nonce, key);
+                    long[] dct = GiftComb.crypto_aead_decrypt(ct, ad, nonce, key);
                     String decrypted_text = convertToHexString(dct);
 
                     System.out.println("Decrypted Message = " + decrypted_text);
